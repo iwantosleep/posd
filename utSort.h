@@ -8,7 +8,6 @@ using namespace std;
 #include <list>
 
 
-
 TEST (Sort, sortByIncreasingPerimeter)
 {
     list<Shape *> shapeList ;//
