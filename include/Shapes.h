@@ -39,8 +39,8 @@ public:
 
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
+    virtual double Compactness() const = 0;
     virtual std::string toString() const = 0;
-	virtual double Compactness() const =0;
 
 };
 
@@ -64,9 +64,11 @@ public:
         ss << name << "(" << x << " " << y << " " << l << " " << w << ")";
         return ss.str();
     }
+	//
 	double Compactness() const 
-	{return area()/ (perimeter()*perimeter());}//Compactness
-
+	{
+        return (4.0 * M_PI) * area() / (perimeter() * perimeter()); 
+    }
 };
 
 class Circle : public Shape{
@@ -89,9 +91,11 @@ public:
         ss << name << "(" << cx << " " << cy << " " << r << ")";
         return ss.str();
     }
+	//
 	double Compactness() const 
-	{return area()/ (perimeter()*perimeter());}//Compactness
-	
+	{
+        return (4.0 * M_PI) * area() / (perimeter() * perimeter()); 
+    }
 };
 
 class Triangle : public Shape {
@@ -152,9 +156,11 @@ public:
         ss << name << "(" << v1.x << " " << v1.y << " " << v2.x << " " << v2.y << " " << v3.x << " " << v3.y << ")";
         return ss.str();
     }
+	//
 	double Compactness() const 
-	{return area()/ (perimeter()*perimeter());} //Compactness
-	
+	{
+        return (4.0 * M_PI) * area() / (perimeter() * perimeter()); 
+    }
 };
 
 double sumOfArea(const std::vector<Shape *> & shapes);
