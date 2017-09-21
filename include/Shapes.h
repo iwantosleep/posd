@@ -174,3 +174,4 @@ void sortByDecreasingPerimeter(std::vector<Shape *> & shapes);
 
 
 #endif // SHAPES_H_INCLUDED
+

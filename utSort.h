@@ -142,3 +142,4 @@ TEST (Sort, sortByIncreasingCompactness) {
 }
 
 #endif
+
