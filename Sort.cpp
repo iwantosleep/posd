@@ -33,5 +33,4 @@ void Sort::sortByIncreasingCompactness(std::list<Shape *> * shapeList)
             );
 }
 
-  // Compactness
-  // area/perimeter^2
+//Compactness=area/perimeter^2
