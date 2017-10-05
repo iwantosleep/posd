@@ -9,13 +9,13 @@ using namespace std;
 TEST (Number,ctor) {
 	Number num(10);
 	//cout <<" This is TEST ONE : " << num.value() << endl;
-	ASSERT_EQ("10", num.value());
+	EXPECT_EQ("10", num.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
 	Number num(123);
 	//cout <<" This is TEST TWO : " << num.symbol() << endl;
-	ASSERT_EQ("123",num.symbol());
+	EXPECT_EQ("123",num.symbol());
 }
 //?- 25=25.
 //true.
@@ -27,7 +27,7 @@ TEST (Number, matchSuccess) {
 		 << "  num2.value = " << num2.value()
 		 << "  (T or F) = " << num1.match(jerry) 
 		 << endl;*/
-	ASSERT_TRUE(num1.match(num2));
+	EXPECT_TRUE(num1.match(num2));
 }
 //?- 25=0.
 //false.
@@ -39,14 +39,14 @@ TEST (Number, matchFailureDiffValue) {
 		 << "  num2.value = " << num2.value()
 		 << "  (T or F) = " << num1.match(jerry) 
 		 << endl;*/
-	ASSERT_FALSE(num1.match(num2));	
+	EXPECT_FALSE(num1.match(num2));	
 }
 //?- 25=tom.
 //false.
 TEST (Number, matchFailureDiffConstant) {
 	Number num(25);
 	Atom tom("tom");
-	ASSERT_FALSE(num.match(tom));
+	EXPECT_FALSE(num.match(tom));
 }
 //?- 25=X.
 //true.
@@ -61,7 +61,7 @@ TEST (Number, matchSuccessToVar) {
 TEST (Atom, matchFailureDiffConstant) {
 	Atom tom("tom");
 	Number num(25);
-	ASSERT_FALSE(num.match(tom));
+	EXPECT_FALSE(num.match(tom));
 }
 
 // ?- tom = X.
@@ -104,7 +104,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 TEST (Var, matchSuccessToNumber) {
 	Variable X("X");
 	Number num(5);
-	ASSERT_TRUE(X.match(num));
+	EXPECT_TRUE(X.match(num));
 	//OK
 }
 
@@ -116,7 +116,7 @@ TEST (Var, matchFailureToTwoDiffNumbers) {
 	Number num2(100);
 	X.match(num1);
 	//cout << X.match(num1) << X.match(num2);
-	ASSERT_FALSE(X.match(num2));
+	EXPECT_FALSE(X.match(num2));
 	//OK
 }
 
@@ -128,7 +128,7 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber) {
 	Atom tom("tom");
 	Number num(25);
 	X.match(tom);
-	ASSERT_FALSE(X.match(num));
+	EXPECT_FALSE(X.match(num));
 	//cout << X.match(tom) << X.match(num);
 	//OK
 }
@@ -139,7 +139,7 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber2) {
 	Variable X("X");
 	Number num(25);
 	tom.match(X);
-	ASSERT_FALSE(num.match(X));
+	EXPECT_FALSE(num.match(X));
 }
 //?- X=tom, X=tom.
 //true.
@@ -147,6 +147,6 @@ TEST(Var, reAssignTheSameAtom){
 	Variable X("X");
 	Atom tom("tom");
 	X.match(tom);
-	ASSERT_TRUE(X.match(tom));
+	EXPECT_TRUE(X.match(tom));
 }
 #endif
