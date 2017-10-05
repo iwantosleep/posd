@@ -1,7 +1,7 @@
 #include <string>
-#include "include/number.h"
-#include "include/atom.h"
-#include "include/variable.h"
+#include "number.h"
+#include "atom.h"
+#include "variable.h"
 #include <sstream>
 #include <iostream>
 using namespace std;

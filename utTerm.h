@@ -1,8 +1,8 @@
 #ifndef UTTERM_H
 #define UTTERM_H
-#include "include/number.h"
-#include "include/atom.h"
-#include "include/variable.h"
+#include "number.h"
+#include "atom.h"
+#include "variable.h"
 
 using namespace std;
 //test Number.value()
