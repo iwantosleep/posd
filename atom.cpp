@@ -29,13 +29,8 @@ bool Atom:: match(Atom atom){
         else
             return true;
 }*/
-bool Atom :: match ( Variable var ){
-	if ( _assignable || _value == var.symbol() ){
-		_value = var.symbol();
-		_assignable = false;
-		return true;
-	}
-	return false;
+bool Atom :: match ( Variable &var ){
+	return var.match(*this);
 }
 
 

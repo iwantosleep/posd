@@ -27,10 +27,9 @@ bool Number:: match(Atom atom){
             return true;
 }
 
-bool Number:: match(Variable var){
-    if(symbol()!=var._symbol) return false;
-        else
-            return true;
+bool Number::match(Variable &variable){
+    
+    return variable.match(*this);
 }
 
 string InttoString(int _INT)

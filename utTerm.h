@@ -53,7 +53,7 @@ TEST (Number, matchFailureDiffConstant) {
 TEST (Number, matchSuccessToVar) {
 	Number num(25);
 	Variable X("X");
-	EXPECT_TRUE(X.match(num));
+	EXPECT_TRUE(num.match(X));
 }
 
 //?- tom=25.
@@ -94,7 +94,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 	X.match(jerry);
 	//cout << " X.match=========" <<X.match(jerry) << "  ";
 	//cout << " X.value= " <<X.value() <<"\n============"; 
-	EXPECT_FALSE(X.match(tom));
+	EXPECT_FALSE(tom.match(X));
 	
 	//OK
 }

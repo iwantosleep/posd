@@ -35,7 +35,7 @@ public:
 				return true;
 	}*/
 
-	bool match(Variable var);
+	bool match(Variable &var);
 	bool assignable();
 	void setAssignable (bool d);
 private:

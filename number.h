@@ -46,7 +46,7 @@ public :
 	}*/
 	
 
-	bool match(Variable var);/*{
+	bool match(Variable &var);/*{
 		if(symbol()!=var._symbol) return false;
 			else
 				return true;
