@@ -40,12 +40,12 @@ bool Variable :: match ( Atom atom ){
 	}
 	return false;
 }
-
+/*
 bool Variable:: match(Variable var){
     if(symbol()!=var._symbol) return false;
         else
             return true;
-}
+}*/
 
 bool Variable :: assignable () { return _assignable; }
 void Variable :: setAssignable ( bool d ) { _assignable = d; }

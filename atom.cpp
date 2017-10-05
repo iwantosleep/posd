@@ -12,18 +12,16 @@ Atom::Atom(string s):_symbol(s){}
 
 string Atom:: symbol(){return _symbol;}
 
-string Atom::  value(){return _value;}
+string Atom::  value(){return _symbol;}
 
 bool Atom:: match(Number num){
-    if(value()!=num.value()) return false;
-    else
+    if(value()!=num.value()){ return false;}
         return true;
 }
 
 bool Atom:: match(Atom atom){
-    if(symbol()!=atom._symbol) return false;
-        else
-            return true;
+    if(symbol()!=atom._symbol){ return false;}
+        return true;
 }
 
 /*bool Atom:: match(Variable var){
