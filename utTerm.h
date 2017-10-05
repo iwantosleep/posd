@@ -9,13 +9,13 @@ using namespace std;
 TEST (Number,ctor) {
 	Number num(10);
 	//cout <<" This is TEST ONE : " << num.value() << endl;
-	EXPECT_EQ("10", num.value());
+	ASSERT_EQ("10", num.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
 	Number num(123);
 	//cout <<" This is TEST TWO : " << num.symbol() << endl;
-	EXPECT_EQ("123",num.symbol());
+	ASSERT_EQ("123",num.symbol());
 }
 //?- 25=25.
 //true.
@@ -27,7 +27,7 @@ TEST (Number, matchSuccess) {
 		 << "  num2.value = " << num2.value()
 		 << "  (T or F) = " << num1.match(jerry) 
 		 << endl;*/
-	EXPECT_TRUE(num1.match(num2));
+	ASSERT_TRUE(num1.match(num2));
 }
 //?- 25=0.
 //false.
@@ -39,21 +39,21 @@ TEST (Number, matchFailureDiffValue) {
 		 << "  num2.value = " << num2.value()
 		 << "  (T or F) = " << num1.match(jerry) 
 		 << endl;*/
-	EXPECT_FALSE(num1.match(num2));	
+	ASSERT_FALSE(num1.match(num2));	
 }
 //?- 25=tom.
 //false.
 TEST (Number, matchFailureDiffConstant) {
 	Number num(25);
 	Atom tom("tom");
-	EXPECT_FALSE(num.match(tom));
+	ASSERT_FALSE(num.match(tom));
 }
 //?- 25=X.
 //true.
 TEST (Number, matchSuccessToVar) {
 	Number num(25);
 	Variable X("X");
-	EXPECT_TRUE(num.match(X));
+	ASSERT_TRUE(num.match(X));
 }
 
 //?- tom=25.
@@ -61,7 +61,7 @@ TEST (Number, matchSuccessToVar) {
 TEST (Atom, matchFailureDiffConstant) {
 	Atom tom("tom");
 	Number num(25);
-	EXPECT_FALSE(num.match(tom));
+	ASSERT_FALSE(num.match(tom));
 }
 
 // ?- tom = X.
@@ -71,7 +71,7 @@ TEST (Atom, matchSuccessToVar) {
 	Variable X("X");
 	//cout << "tom.match(X) = " << tom.match(X) <<endl;
 	//ASSERT_EQ(tom,X);  
-	EXPECT_TRUE(tom.match(X));
+	ASSERT_TRUE(tom.match(X));
 	//OK
 }
 
@@ -81,7 +81,7 @@ TEST (Atom, matchSuccessToVarInstantedToDiffConstant) {
 	Variable X("X");
 	Atom tom("tom");
 	X.match(tom);
-	EXPECT_TRUE(tom.match(X));
+	ASSERT_TRUE(tom.match(X));
 	//OK
 }
 
@@ -104,7 +104,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 TEST (Var, matchSuccessToNumber) {
 	Variable X("X");
 	Number num(5);
-	EXPECT_TRUE(X.match(num));
+	ASSERT_TRUE(X.match(num));
 	//OK
 }
 
@@ -116,7 +116,7 @@ TEST (Var, matchFailureToTwoDiffNumbers) {
 	Number num2(100);
 	X.match(num1);
 	//cout << X.match(num1) << X.match(num2);
-	EXPECT_FALSE(X.match(num2));
+	ASSERT_FALSE(X.match(num2));
 	//OK
 }
 
