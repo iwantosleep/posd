@@ -28,7 +28,6 @@ TEST (Number, matchSuccess) {
 		 << "  (T or F) = " << num1.match(jerry) 
 		 << endl;*/
 	ASSERT_TRUE(num1.match(num2));
-	//
 }
 //?- 25=0.
 //false.
