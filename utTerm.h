@@ -94,7 +94,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 	X.match(jerry);
 	//cout << " X.match=========" <<X.match(jerry) << "  ";
 	//cout << " X.value= " <<X.value() <<"\n============"; 
-	EXPECT_FALSE(tom.match(X));
+	ASSERT_FALSE(tom.match(X));
 	
 	//OK
 }
