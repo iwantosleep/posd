@@ -36,10 +36,12 @@ public:
 	}*/
 
 	bool match(Variable var);
-
+	bool assignable();
+	void setAssignable (bool d);
 private:
 
 	string _value;
+	bool _assignable = true;
 //////////////////////
 };
 #endif

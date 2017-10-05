@@ -26,18 +26,18 @@ bool Atom:: match(Atom atom){
             return true;
 }
 
-bool Atom:: match(Variable var){
+/*bool Atom:: match(Variable var){
     if(symbol()!=var._symbol) return false;
         else
             return true;
-}
-/*bool Atom :: match ( Variable var ){
-	if ( var.assignable() || var.value() == _symbol ){
-		var.setValue ( _symbol );
-		var.setAssignable (false);
+}*/
+bool Atom :: match ( Variable var ){
+	if ( _assignable || _value == var.symbol() ){
+		_value = var.symbol();
+		_assignable = false;
 		return true;
 	}
 	return false;
-}*/
+}
 
 
