@@ -128,7 +128,7 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber) {
 	Atom tom("tom");
 	Number num(25);
 	X.match(tom);
-	EXPECT_FALSE(X.match(num));
+	ASSERT_FALSE(X.match(num));
 	//cout << X.match(tom) << X.match(num);
 	//OK
 }
@@ -139,7 +139,7 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber2) {
 	Variable X("X");
 	Number num(25);
 	tom.match(X);
-	EXPECT_FALSE(num.match(X));
+	ASSERT_FALSE(num.match(X));
 }
 //?- X=tom, X=tom.
 //true.
@@ -147,6 +147,6 @@ TEST(Var, reAssignTheSameAtom){
 	Variable X("X");
 	Atom tom("tom");
 	X.match(tom);
-	EXPECT_TRUE(X.match(tom));
+	ASSERT_TRUE(X.match(tom));
 }
 #endif
