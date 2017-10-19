@@ -52,9 +52,9 @@ bool Variable :: match ( Term &term ) {
 				if (Varlis.size()>0) { 
                     //
                     int i=Varlis.size()-1;
+                    int count=0;
                     while(i)
                     {
-                        int count=0;
                         (_var->Varlis).push_back (Varlis[count]);
                         count++;
                         i--;
