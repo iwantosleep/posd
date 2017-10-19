@@ -9,42 +9,101 @@ using namespace std;
 
 Variable::Variable(string s):_symbol(s){}
 
-string Variable:: symbol()const {return _symbol;}
+string Variable:: symbol() const {return _symbol;}
 
-string Variable::  value()const {
-    if(!_Varpt)return symbol();
-    else return _Varpt -> value();
+void Variable:: getsymbol(string s)
+{
+    _symbol=s;
 }
-
-
-
-bool Variable::match(Term &term){
-    if(&term!=this)
-    {
-        if(_Varpt)return _Varpt -> match(term);
-        else{_Varpt =&term;return true;}
-    }
-    else 
-        return true;
+/*string Variable::  value() const {
+    if(!_Vart)return symbol();
+    else return _Vart -> value();
+}*///test
+string Variable :: value () const { 
+	if ( temp != 0)
+		return temp ->value();
+	else
+		return _value;
 }
-
-/*bool Variable::match(Term &term){
-    if(&term == this)
-    {
-        return true;
-    }
-    else{
-      if(!_Varpt){
-        _Varpt = &term;
-        return true;
-      }
-      else
-        return _Varpt ->match(term);
-    }
-  }*/
-
-
+void Variable:: getvalue(string s)
+{
+    _value=s;
+} 
 /*
-bool Variable :: assignable () { return _assignable; }
-void Variable :: setAssignable ( bool d ) { _assignable = d; }
+bool Variable::match(Term &term){
+//not good match
+}*/
+
+bool Variable :: match ( Term &term ) {
+	Variable * _var = dynamic_cast < Variable * > ( &term );
+	Struct * _str = dynamic_cast < Struct * > ( &term );
+	
+    // cout << "term.symbol()" << term.symbol() << endl;k
+    if (_symbol!=term.symbol())cout <<"";
+	else return true; 
+
+	if ( _Varflag || _value == term.symbol() ){
+		if (_var!=NULL){//compare Var
+			if(_var->_Varflag){ //have no match now
+				_value = _var ->value();
+                (_var->Varlis).push_back (this);
+                Varlis.push_back (_var);
+                 // cout << "_value" << _value << endl;k
+				if (Varlis.size()>0) { 
+                    //
+                    int i=Varlis.size()-1;
+                    while(i)
+                    {
+                        int count=0;
+                        (_var->Varlis).push_back (Varlis[count]);
+                        count++;
+                        i--;
+                    }//
+				}
+				if (Varlis.size()>0){ 
+                    //
+                    int i=Varlis.size()-1;
+                    while(i)
+                    {
+                        int count=0;
+                        Varlis.push_back(Varlis[count]);
+                        count++;
+                        i--;
+                    }//
+				}	
+			}
+			else{//match over
+				_value=_var->value();
+				_Varflag=false;
+			}
+			return true;
+		}
+		if(_str>0){
+			temp=_str;//30
+			return true; 
+		}
+        //need match sbol
+        // cout << "term.symbol()" << term.symbol() << endl;
+        // cout << "term.value()" << term.value() << endl;
+		_value = term.symbol();
+        
+		if ( Varlis.size()>0) {
+            //
+            int i=Varlis.size();
+                    while(i)
+                    {
+                        int count=0;
+                        Varlis[count] -> _value = term.symbol();
+                        count++;
+                        i--;
+                    }//
+		}	
+        _Varflag = false;//flg0
+		return true;//cout << "value()" << value()<<endl;
+	}
+	return false;
+}
+/*
+bool Variable :: _Varflag () { return _Varflag; }
+void Variable :: set_Varflag ( bool d ) { _Varflag = d; }??
 */

@@ -9,7 +9,7 @@ else
 	g++ -o hw3 mainTerm.o number.o atom.o variable.o -lgtest -lpthread
 endif
 
-mainTerm.o: mainTerm.cpp utStruct.h term.h struct.h
+mainTerm.o: mainTerm.cpp utStruct.h utVariable.h term.h struct.h
 	g++ -std=gnu++0x -c mainTerm.cpp
 number.o: number.h number.cpp
 	g++ -std=gnu++0x -c number.cpp
