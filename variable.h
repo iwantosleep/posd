@@ -2,46 +2,26 @@
 #define VARIABLE_H
 
 #include <string>
-
+#include "term.h"
 //using std::string;
 using namespace std;
 
 class Atom;
 class Number;
 
-class Variable{
+class Variable : public Term {
 public:
   Variable(string s);//:_symbol(s){}
   string  _symbol;
-  string symbol();
-  string value();//{ return _value; }
+  string symbol() const;
+  string value() const;//{ return _value; }
   
-  bool match( Atom atom );/*{
-    bool ret = _assignable;
-    if(_assignable){
-      _value = atom._symbol ;
-      _assignable = false;
-    }
-    return ret;
-  }*/
-	
-  bool match( Number num );/*{
-    bool ret = _assignable;
-    if(_assignable){
-      _value = num._symbol ;
-      _assignable = false;
-    }
-    return ret;
-  }*/
-  bool match( Variable Var );
-  
-  bool assignable();
-  void setAssignable (bool d);
-  
+bool match(Term &term);
 
 private:
   string _value;
   bool _assignable = true;
+  Term *_Varpt=NULL;
 };
 
 #endif

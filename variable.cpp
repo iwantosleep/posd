@@ -9,43 +9,42 @@ using namespace std;
 
 Variable::Variable(string s):_symbol(s){}
 
-string Variable:: symbol(){return _symbol;}
+string Variable:: symbol()const {return _symbol;}
 
-string Variable::  value(){return _value;}
+string Variable::  value()const {
+    if(!_Varpt)return symbol();
+    else return _Varpt -> value();
+}
 
-/*bool Variable:: match(Number num){
-    if(value()!=num.value()) return false;
-    else
+
+
+bool Variable::match(Term &term){
+    if(&term!=this)
+    {
+        if(_Varpt)return _Varpt -> match(term);
+        else{_Varpt =&term;return true;}
+    }
+    else 
         return true;
-}*/
-bool Variable :: match ( Number num ){
-	if ( _assignable || ( _value == num.symbol() ) ){
-		_value = num.symbol();
-		_assignable = false;	
-		return true;
-	}
-	return false;
 }
 
-/*bool Variable:: match(Atom atom){
-    if(symbol()!=atom._symbol) return false;
-        else
-            return true;
-}*/
-bool Variable :: match ( Atom atom ){
-	if ( _assignable || ( _value == atom.symbol() ) ){
-		_value = atom.symbol();
-		_assignable = false;	
-		return true;
-	}
-	return false;
-}
+/*bool Variable::match(Term &term){
+    if(&term == this)
+    {
+        return true;
+    }
+    else{
+      if(!_Varpt){
+        _Varpt = &term;
+        return true;
+      }
+      else
+        return _Varpt ->match(term);
+    }
+  }*/
+
+
 /*
-bool Variable:: match(Variable var){
-    if(symbol()!=var._symbol) return false;
-        else
-            return true;
-}*/
-
 bool Variable :: assignable () { return _assignable; }
 void Variable :: setAssignable ( bool d ) { _assignable = d; }
+*/

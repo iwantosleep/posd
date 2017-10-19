@@ -7,32 +7,16 @@
 using namespace std;
 
 
-string InttoString(int _INT);//副程式
+string InttoString(double _INT);//副程式
 
-Number::Number(int s):_symbol(InttoString(s)),_value(InttoString(s)){}
+Number::Number(double s):_symbol(InttoString(s)),_value(InttoString(s)){}
 
-string Number:: symbol(){return _symbol;}
+string Number:: symbol()const{return _symbol;}
 
-string Number::  value(){return _value;}
+string Number::  value()const{return _value;}
 
-bool Number:: match(Number num){
-    if(value()!=num.value()) return false;
-    else
-        return true;
-}
 
-bool Number:: match(Atom atom){
-    if(symbol()!=atom._symbol) return false;
-        else
-            return true;
-}
-
-bool Number::match(Variable &variable){
-    
-    return variable.match(*this);
-}
-
-string InttoString(int _INT)
+string InttoString(double _INT)
 {
     stringstream ss;
     string retTostring;

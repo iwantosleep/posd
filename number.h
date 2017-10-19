@@ -3,65 +3,24 @@
 
 #include <string>
 //////////////////////
-
+#include "term.h"
 //#include <sstream>
 //using std::string;
 using namespace std;
-string InttoString(int _INT);
+//string InttoString(double _INT);
 
-class Atom;
+
 class Variable;
 
-class Number{
+class Number : public Term{
 public :
-	Number (int s);//:_symbol(InttoString(s)),_value(InttoString(s)){}
+	Number (double s);
 	
 	string _symbol;
-	string symbol();//{return _symbol;}
-	
-	/*string setValue(string s){ 
-		_value = s;
-		}*/
-	string  value();//{return _value;}
-	
-	
-	/*bool match(){
-	return ;
-	}*/
+	string  symbol() const;
 
-	//VALUE'S MATCH
-	bool match(Number num);/*{
-		if(value()!=num.value()) return false;
-		else
-			return true;
-	}*/
-	
+	string value() const ;
 
-	//atom SYMBOL  MATCH
-	//here use _matchValue replace "matchSymbol"
-	bool match(Atom atom);/*{
-		if(symbol()!=atom._symbol) return false;
-			else
-				return true;
-	}*/
-	
-
-	bool match(Variable &var);/*{
-		if(symbol()!=var._symbol) return false;
-			else
-				return true;
-	}*/
-	
-	
-	/*bool match( Atom atom ){
-     bool ret = _assignable;
-     if(_assignable){
-       _value = atom._symbol ;
-       _assignable = false;
-     }
-    return ret;
-  }*/
-	 
 	
 private:
 
