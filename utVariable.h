@@ -85,22 +85,25 @@ TEST (Variable, num1_to_varZ_to_varY_to_varX) {
   X.match(Y);
   Y.match(Z);
   Z.match(num);
-  ASSERT_EQ("1", Z.value());//k
+  ASSERT_EQ("1",X.value());
+  ASSERT_EQ("1",Y.value());
+  ASSERT_EQ("1",Z.value());//k
 }
 
 // ?- X=Y, X=Z, Z=1
 // X=1, Y=1, Z=1
 TEST (Variable, num1_to_varZ_to_varX_and_varY_to_varX) {
-  Variable X("X");
-  Variable Y("Y");
-  Variable Z("Z");
-  Number num(1);
-  X.match(Y);
-  X.match(Z);
-  Z.match(num);
-  ASSERT_EQ("1", Z.value());
-  ASSERT_EQ("1", Z.value());
-  ASSERT_EQ("1", Z.value());//k
+    Variable X("X");
+    Variable Y("Y");
+    Variable Z("Z");
+    Number num1(1);
+    X.match(Y);//cout << X.value()<<"     "<<Y.value()<<"        "<<Z.value()<<"\n\n";
+    X.match(Z);//cout << X.value()<<"     "<<Y.value()<<"        "<<Z.value()<<"\n\n";
+    Z.match(num1);//cout << X.value()<<"     "<<Y.value()<<"        "<<Z.value()<<"\n\n";
+   // cout << X.value()<<"     "<<Y.value()<<"        "<<Z.value()<<"\n\n";
+    ASSERT_EQ("1",X.value());
+    ASSERT_EQ("1",Y.value());
+    ASSERT_EQ("1",Z.value());
 }
 
 // Give there is a Struct s contains Variable X

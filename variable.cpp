@@ -89,14 +89,8 @@ bool Variable :: match ( Term &term ) {
         
 		if ( Varlis.size()>0) {
             //
-            int i=Varlis.size();
-                    while(i)
-                    {
-                        int count=0;
-                        Varlis[count] -> _value = term.symbol();
-                        count++;
-                        i--;
-                    }//
+            for (int i = 0; i < Varlis.size(); i++)
+				Varlis[i]->_value = term.symbol();//
 		}	
         _Varflag = false;//flg0
 		return true;//cout << "value()" << value()<<endl;
