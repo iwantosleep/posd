@@ -14,7 +14,7 @@ using namespace std;
 // Then #symbol() of the list should return "[]"
 TEST ( List , constructor ) {
   	List list;
-	ASSERT_EQ ( "[]" , list.symbol() );
+	EXPECT_EQ ( "[]" , list.symbol() );
 }
 
 // Given there are two perfect numbers: 8128, 496
@@ -23,7 +23,7 @@ TEST ( List , constructor ) {
 TEST ( List , Numbers ) {
 	Number n1(8128),n2(496);
   	List list(vector<Term *>{&n1, &n2});
-	ASSERT_EQ ( "[8128, 496]" , list.symbol() );
+	EXPECT_EQ ( "[8128, 496]" , list.symbol() );
 }
 
 // Given there are two atoms: "terence_tao", "alan_mathison_turing"
@@ -32,7 +32,7 @@ TEST ( List , Numbers ) {
 TEST ( List , Atoms ) {
 	Atom a1 ("terence_tao"),a2("alan_mathison_turing");
 	List list(vector<Term *>{&a1, &a2});
-	ASSERT_EQ ( "[terence_tao, alan_mathison_turing]" , list.symbol() );
+	EXPECT_EQ ( "[terence_tao, alan_mathison_turing]" , list.symbol() );
 }
 
 // Given there are two variables: X, Y
@@ -41,17 +41,17 @@ TEST ( List , Atoms ) {
 TEST ( List , Vars ) {
 	Variable X ( "X" ) , Y ( "Y" );
 	List list(vector<Term *>{&X, &Y});
-	ASSERT_EQ ( "[X, Y]" , list.symbol() );
+	EXPECT_EQ ( "[X, Y]" , list.symbol() );
 }
 
 // ?- tom = [496, X, terence_tao].
 // false.
 TEST ( List , matchToAtomShouldFail ) {
-	/*Atom a1 ( "tom" ) ,a2 ( "terence_tao" );
+	Atom a1 ( "tom" ) ,a2 ( "terence_tao" );
 	Number num ( 496 );
 	Variable X ( "X" );
 	List list(vector<Term *>{&num, &X, &a2});
-	EXPECT_FALSE (a1.match(list));	*/
+	EXPECT_FALSE (a1.match(list));	
 }
 
 // ?- 8128 = [496, X, terence_tao].
@@ -61,7 +61,7 @@ TEST ( List , matchToNumberShouldFail ) {
 	Variable X( "X" );
 	Atom a ( "terence_tao" );
 	List list(vector<Term *>{&num1, &X, &a});
-	ASSERT_FALSE (num1.match (list));
+	EXPECT_FALSE (num1.match (list));
 }
 
 // ?- s(X) = [496, X, terence_tao].
@@ -73,7 +73,7 @@ TEST ( List , matchToStructShouldFail ) {
 	Number num ( 496 );
 	Atom a ( "terence_tao" );
 	List list(vector<Term *>{&num, &X, &a});
-	ASSERT_FALSE ( hobby.match (list) );
+	EXPECT_FALSE ( hobby.match (list) );
 }
 
 // ?- Y = [496, X, terence_tao].
@@ -83,7 +83,7 @@ TEST ( List , matchToVarShouldSucceed ) {
 	Number num(496);
 	Atom a( "terence_tao" );
 	List list(vector<Term *>{&num, &X, &a});
-	ASSERT_TRUE (Y.match (list));
+	EXPECT_TRUE (Y.match (list));
 }
 
 // ?- X = [496, X, terence_tao].
@@ -93,7 +93,7 @@ TEST ( List , matchToVarOccuredInListShouldFail ) {
 	Number num ( 496 );
 	Atom a ( "terence_tao" );
 	List list(vector<Term *>{&num, &X, &a});
-	ASSERT_FALSE (X.match (list));
+	EXPECT_FALSE (X.match (list));
 }
 
 // ?- [496, X, terence_tao] = [496, X, terence_tao].
@@ -105,7 +105,7 @@ TEST ( List , matchToSameListShouldSucceed ) {
 	vector < Term * > args = {&num,&X,&a};
   	List list1 (args);
 	List list2 (args);
-	ASSERT_TRUE (list1.match(list2));
+	EXPECT_TRUE (list1.match(list2));
 }
 
 // ?- [496, X, terence_tao] = [496, Y, terence_tao].
@@ -118,7 +118,7 @@ TEST ( List , matchToSameListWithDiffVarNameShouldSucceed ) {
 	vector < Term * > args2 = { &num , &Y , &a };
   	List list1 (args1);
 	List list2 (args2);
-	ASSERT_TRUE (list1.match(list2));	
+	EXPECT_TRUE (list1.match(list2));	
 }
 
 // ?- [496, X, terence_tao] = [496, 8128, terence_tao].
@@ -132,7 +132,7 @@ TEST ( List , matchToVarToAtominListShouldSucceed ) {
   	List list1 (args1);
 	List list2 (args2);
 	list1.match (list2);
-	ASSERT_EQ ("8128" , X.value());	
+	EXPECT_EQ ("8128" , X.value());	
 }
 
 // ?- Y = [496, X, terence_tao], X = alan_mathison_turing.
@@ -146,8 +146,8 @@ TEST ( List , matchVarinListToAtomShouldSucceed ) {
   	List list ( args );
 	Y.match (list);
 	X.match (a2);
-	ASSERT_EQ ( "[496, alan_mathison_turing, terence_tao]" , Y.value() );	
-	ASSERT_EQ ( "alan_mathison_turing" , X.value() );
+	EXPECT_EQ ( "[496, alan_mathison_turing, terence_tao]" , Y.value() );	
+	EXPECT_EQ ( "alan_mathison_turing" , X.value() );
 }
 
 // Example: 
@@ -175,8 +175,8 @@ TEST ( List , headAndTailMatching2 ) {
 TEST ( List , headAndTailMatching3 ) {
 	Atom f ( "[first]" ) , s ( "second" ) , t ( "third" );
   	List list(vector<Term *>{&f, &s, &t});
-  	ASSERT_EQ ( string("[first]") , list.head() -> value() );
-  	ASSERT_EQ ( string("[second, third]") , list.tail() -> value() );
+  	EXPECT_EQ ( string("[first]") , list.head() -> value() );
+  	EXPECT_EQ ( string("[second, third]") , list.tail() -> value() );
 }
 
 // ?- [first, second, third] = [first, second, H|T].
@@ -184,8 +184,8 @@ TEST ( List , headAndTailMatching3 ) {
 TEST ( List , headAndTailMatching4 ) {
 	Atom f ( "first" ) , s ( "second" ) , t ( "third" );
   	List list(vector<Term *>{&f, &s, &t});
-  	ASSERT_EQ ( string("third") , list.tail() -> tail() -> head() -> value() );
-  	ASSERT_EQ ( string("[]") , list.tail() -> tail() -> tail() -> value() );
+  	EXPECT_EQ ( string("third") , list.tail() -> tail() -> head() -> value() );
+  	EXPECT_EQ ( string("[]") , list.tail() -> tail() -> tail() -> value() );
 }
  
 // Given there is a empty list
@@ -196,7 +196,7 @@ TEST ( List , emptyExecptionOfHead ) {
 	try {
 		l.head();
 	}catch (string s){
-  		ASSERT_EQ ( "Accessing head in an empty list" , s);
+  		EXPECT_EQ ( "Accessing head in an empty list" , s);
 	}
 }
 
@@ -208,7 +208,7 @@ TEST ( List , emptyExecptionOfTail ) {
 	try {
 		l.tail();
 	}catch (string s){
-  		ASSERT_EQ ( "Accessing tail in an empty list" , s);
+  		EXPECT_EQ ( "Accessing tail in an empty list" , s);
 	}
 }
 #endif
