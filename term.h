@@ -2,20 +2,16 @@
 #define TERM_H
 
 #include <string>
-
-using std::string;
-
+using std :: string;
+ 
 class Term{
-	
 	public:
-		virtual string symbol() const = 0;
-		virtual string value() const{
-			return symbol();
-		};
-		
-		virtual bool match(Term & term){
-			return symbol() == term.symbol();
-		}
-
+		virtual string symbol() const;
+		virtual string value() const;
+		virtual bool match ( Term & term );
+	protected:
+		Term ();
+		Term ( string s );
+		string _symbol;
 };
 #endif
