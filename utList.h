@@ -173,25 +173,42 @@ TEST ( List , headAndTailMatching2 ) {
 // ?- [[first], second, third] = [H|T].
 // H = [first], T = [second, third].
 TEST ( List , headAndTailMatching3 ) {
-	
+	Atom f ( "[first]" ) , s ( "second" ) , t ( "third" );
+  	List list(vector<Term *>{&f, &s, &t});
+  	ASSERT_EQ ( string("[first]") , list.head() -> value() );
+  	ASSERT_EQ ( string("[second, third]") , list.tail() -> value() );
 }
 
 // ?- [first, second, third] = [first, second, H|T].
 // H = third, T = [].
 TEST ( List , headAndTailMatching4 ) {
-	}
+	Atom f ( "first" ) , s ( "second" ) , t ( "third" );
+  	List list(vector<Term *>{&f, &s, &t});
+  	ASSERT_EQ ( string("third") , list.tail() -> tail() -> head() -> value() );
+  	ASSERT_EQ ( string("[]") , list.tail() -> tail() -> tail() -> value() );
+}
  
 // Given there is a empty list
 // When client still want to get the head of list
 // Then it should throw a string: "Accessing head in an empty list" as an exception.
 TEST ( List , emptyExecptionOfHead ) {
-  
+  	List l;
+	try {
+		l.head();
+	}catch (string s){
+  		ASSERT_EQ ( "Accessing head in an empty list" , s);
+	}
 }
 
 // Given there is a empty list
 // When client still want to get the tail of list
 // Then it should throw a string: "Accessing tail in an empty list" as an exception.
 TEST ( List , emptyExecptionOfTail ) {
-	
+	List l;
+	try {
+		l.tail();
+	}catch (string s){
+  		ASSERT_EQ ( "Accessing tail in an empty list" , s);
+	}
 }
 #endif
