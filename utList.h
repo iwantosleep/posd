@@ -51,7 +51,7 @@ TEST ( List , matchToAtomShouldFail ) {
 	Number num ( 496 );
 	Variable X ( "X" );
 	List list(vector<Term *>{&num, &X, &a2});
-	ASSERT_FALSE (a1.match(list));	
+	EXPECT_FALSE (a1.match(list));	
 }
 
 // ?- 8128 = [496, X, terence_tao].
