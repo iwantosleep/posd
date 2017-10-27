@@ -102,7 +102,7 @@ TEST ( List , matchToVarOccuredInListShouldFail ) {
 	cout << "list.symbol = " << list.symbol() << endl;
 	cout << "list.value = " << list.value() << endl<<endl;*/
 	//cout << list << endl;
-	ASSERT_FALSE(!X.match(list));
+	ASSERT_FALSE(X.match(list));
 
 }
 
