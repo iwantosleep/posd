@@ -10,14 +10,13 @@ class List : public Term {
 	public:
 		string symbol() const;
 		string value() const;
+		int getSize();
+		Term & single ( int i );
 		bool match(Term & term);
-		int getElelen();//
-		Term & liarr ( int i );//list arr compare
-	
 	public:
   		List ();
-  		List (vector<Term *> const & elements);		
-	 	Term * head() const;
+  		List (vector<Term *> const & elements);
+  		Term * head() const;
   		List * tail() const;
 
 	private:

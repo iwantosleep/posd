@@ -5,6 +5,6 @@
 
 class Atom : public Term{
 	public:
-  		Atom (string s);
+  		Atom ( string s );
 };
 #endif

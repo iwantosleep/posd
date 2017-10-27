@@ -47,8 +47,8 @@ bool Variable :: match ( Term &term ) {
 			return true; 
 		}
 		if ( ls ){
-			for ( int i = 0 ; i < ( ls -> getElelen() ) ; i++ ) {
-				if ( ( ls -> liarr(i) ).symbol() == _symbol) 
+			for ( int i = 0 ; i < ( ls -> getSize() ) ; i++ ) {
+				if ( ( ls -> single(i) ).symbol() == _symbol) 
 					return false;
 			}
 			_save = ls;
