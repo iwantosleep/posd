@@ -42,7 +42,7 @@ bool List :: match ( Term & term ) {
 		return true;	
 	}
 	}
-	if(_var)return _var -> match(*this);
+	if(_var)return _var->match(*_ls);//
 	return false;
 } 
 
