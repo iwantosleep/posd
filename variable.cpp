@@ -62,7 +62,7 @@ bool Variable :: match ( Term &term ) {
 			return true; 
 		}
 		if (_ls>0){
-			for ( int i = 0 ; i < ( _ls -> getElelen() ) ; i++ ) {
+			for (int i=0;i<(_ls->getElelen());i++) {
 				if ( ( _ls -> liarr(i) ).symbol() == _symbol) 
 					return false;
 			}
