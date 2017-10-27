@@ -1,5 +1,5 @@
 #include "list.h"
-
+#include "variable.h"
 List :: List () : _elements () {}
 
 List :: List (vector<Term *> const & elements):_elements(elements){}
@@ -30,7 +30,7 @@ string List :: value () const {
 
 bool List :: match ( Term & term ) {
 	List * _ls=dynamic_cast < List * > (&term);
-	
+	Variable * _var = dynamic_cast < Variable * > ( & term );
 	if(_ls){
 	if (_elements.size() != _ls->getElelen()){
 		return false;
@@ -40,9 +40,10 @@ bool List :: match ( Term & term ) {
 		for (int i=0;i< _elements.size()-1;i++ )
 			_elements[i] -> match((_ls -> liarr(i)));
 		return true;	
-	}	
-	return false;
 	}
+	}
+	if(_var)return _var -> match(*this);
+	return false;
 } 
 
 int List :: getElelen() { return _elements.size(); }
