@@ -1,6 +1,6 @@
 #ifndef UTLIST_H
 #define UTLIST_H
-
+#include <iostream>
 #include <string>
 //using std::string;
 
@@ -95,9 +95,15 @@ TEST ( List , matchToVarOccuredInListShouldFail ) {
 	Variable X ( "X" );
 	Number num ( 496 );
 	Atom a ( "terence_tao" );
-	List list(vector<Term *>{&num, &X, &a});
-	EXPECT_FALSE (list.match (X));
-	EXPECT_TRUE (X.match (list));
+	vector < Term * > args = {&num,&X,&a};
+  	List list (args);
+	/*cout << "X.symbol = " << X.symbol() << endl;
+	cout << "X.value = " << X.value() << endl;
+	cout << "list.symbol = " << list.symbol() << endl;
+	cout << "list.value = " << list.value() << endl<<endl;*/
+	//cout << list << endl;
+	ASSERT_FALSE(!X.match(list));
+
 }
 
 // ?- [496, X, terence_tao] = [496, X, terence_tao].
