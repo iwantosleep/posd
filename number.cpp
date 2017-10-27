@@ -1,10 +1,16 @@
 #include "number.h"
 #include <sstream>
+#include <string> 
+#include <iostream>
 
-string doubleToString (double db) {
-	std :: stringstream ss;
-	ss << db;
-	return ss.str();
+using namespace std;
+string InttoString(double s)
+{
+    stringstream ss;
+    string retTostring;
+    ss << s;
+    //ss >> retTostring;
+    return ss.str();//retTostring;
 }
 
-Number :: Number ( double db ) : Term ( doubleToString ( db ) ) {}
+Number :: Number(double s):Term (InttoString (s)){}
