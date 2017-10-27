@@ -80,11 +80,13 @@ TEST ( List , matchToStructShouldFail ) {
 // ?- Y = [496, X, terence_tao].
 // Y = [496, X, terence_tao].
 TEST ( List , matchToVarShouldSucceed ) {
-	Variable Y("Y"), X("X");
+	Variable Y ( "Y" ) , X ( "X" );
 	Number num(496);
-	Atom a( "terence_tao" );
-	List list(vector<Term *>{&num, &X, &a});
-	EXPECT_TRUE (Y.match (list));
+	Atom a("terence_tao");
+	vector < Term * > args = {&num, &X, &a};
+  	List list ( args );
+	ASSERT_TRUE (Y.match(list));
+	
 }
 
 // ?- X = [496, X, terence_tao].
@@ -94,6 +96,7 @@ TEST ( List , matchToVarOccuredInListShouldFail ) {
 	Number num ( 496 );
 	Atom a ( "terence_tao" );
 	List list(vector<Term *>{&num, &X, &a});
+	EXPECT_FALSE (list.match (X));
 	EXPECT_TRUE (X.match (list));
 }
 
