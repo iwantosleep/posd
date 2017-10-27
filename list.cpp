@@ -30,6 +30,8 @@ string List :: value () const {
 
 bool List :: match ( Term & term ) {
 	List * _ls=dynamic_cast < List * > (&term);
+	
+	if(_ls){
 	if (_elements.size() != _ls->getElelen()){
 		return false;
 	}
@@ -39,6 +41,8 @@ bool List :: match ( Term & term ) {
 			_elements[i] -> match((_ls -> liarr(i)));
 		return true;	
 	}	
+	return false;
+	}
 } 
 
 int List :: getElelen() { return _elements.size(); }

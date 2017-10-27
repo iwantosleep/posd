@@ -52,7 +52,7 @@ TEST ( List , matchToAtomShouldFail ) {
 	Variable X ( "X" );
 	List list(vector<Term *>{&num, &X, &a2});
 	EXPECT_FALSE (a1.match(list));
-	//EXPECT_FALSE (list.match(a1));	
+	EXPECT_FALSE (list.match(a1));	
 }
 
 // ?- 8128 = [496, X, terence_tao].
@@ -94,7 +94,7 @@ TEST ( List , matchToVarOccuredInListShouldFail ) {
 	Number num ( 496 );
 	Atom a ( "terence_tao" );
 	List list(vector<Term *>{&num, &X, &a});
-	EXPECT_FALSE (X.match (list));
+	EXPECT_TRUE (X.match (list));
 }
 
 // ?- [496, X, terence_tao] = [496, X, terence_tao].
