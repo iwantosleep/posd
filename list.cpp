@@ -2,66 +2,59 @@
 
 List :: List () : _elements () {}
 
-List :: List (vector<Term *> const & elements):_elements(elements){}
+List :: List ( vector < Term * > const & elements ) : _elements ( elements ) {}
 
 string List :: symbol () const {
-	if(_elements.size()>0)
-		{
-			string retsym = "[";
-			for (int i=0;i< _elements.size()-1;i++)
-			retsym += _elements[i] -> symbol() + ", ";
-			retsym += _elements [_elements.size()-1] -> symbol() + "]"; 
-			return retsym;
-		}
-	else return "[]";
+	if ( !_elements.size() )
+		return "[]";
+	else {
+		string ret = "[";
+		for ( int i = 0 ; i < _elements.size() - 1 ; i++ )
+			ret += _elements[i] -> symbol() + ", ";
+		ret += _elements [ _elements.size() - 1 ] -> symbol() + "]"; 
+		return ret;
+	}
 }
 
 string List :: value () const { 
-	if (_elements.size()>0)
-	{
-		string retsym = "[";
-		for (int i=0;i<_elements.size()-1;i++)
-			retsym += _elements[i] -> value() + ", ";
-			retsym += _elements [_elements.size()- 1] -> value() + "]"; 
-		return retsym;
-	}
-	else return "[]";
-}
-
-bool List :: match ( Term & term ) {
-	List * _ls=dynamic_cast < List * > (&term);
-	if (_elements.size() != _ls->getElelen()){
-		return false;
-	}
-	else
-	{
-		for (int i=0;i< _elements.size()-1;i++ )
-			_elements[i] -> match((_ls -> liarr(i)));
-		return true;	
+	if ( !_elements.size() )
+		return "[]";
+	else {
+		string ret = "[";
+		for ( int i = 0 ; i < _elements.size() - 1 ; i++ )
+			ret += _elements[i] -> value() + ", ";
+		ret += _elements [ _elements.size() - 1 ] -> value() + "]"; 
+		return ret;
 	}	
-} 
+}
 
 int List :: getElelen() { return _elements.size(); }
 
-Term & List :: liarr (int n) { return *_elements[n]; }
+Term & List :: liarr ( int i ) { return *_elements[i]; }
 
 Term * List :: head () const { 
-	if (_elements.size()>0)
-		return _elements[0];
+	if ( !_elements.size() )
+		throw std :: string ( "Accessing head in an empty list" );
 	else
-		throw string ("Accessing head in an empty list");
+		return _elements[0]; 
 }
 
 List * List :: tail () const {
-	if (_elements.size()>0)
-	{
-		vector < Term * > tail (_elements.begin() + 1 , _elements.end() );
+	if ( !_elements.size() )
+		throw std :: string ( "Accessing tail in an empty list" );
+	else{
+		std :: vector < Term * > tail ( _elements.begin() + 1 , _elements.end() );
 		return new List (tail);
-	}
-	else
-	{
-		throw std :: string ("Accessing tail in an empty list");
 	}
 }
 
-
+bool List :: match ( Term & term ) {
+	List * ls = dynamic_cast < List * > ( &term );
+	if ( _elements.size() == ls -> getElelen() ) {
+		for ( int i = 0 ; i < _elements.size() - 1 ; i++ )
+			_elements[i] -> match ( ( ls -> liarr(i)) );
+		return true;
+	}
+	else
+		return false;	
+} 
