@@ -54,6 +54,11 @@ public:
     }
     return false;
   }
+  
+  int arity() {return _args.size();} // return the number of args (terms) //hw5
+  
+  
+  
 private:
   Atom _name;
   std::vector<Term *> _args;
