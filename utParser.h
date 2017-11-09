@@ -103,9 +103,9 @@ TEST_F(ParserTest, parseStructThreeArgs) {
 // Then it should return a List.
 // And #symbol() of List should return "[]".
 TEST_F(ParserTest, parseListEmpty) {            //will have space error
-  /*Scanner scanner("   [   ]");
+  Scanner scanner("   [   ]");
   Parser parser(scanner);
-  ASSERT_EQ("[]", parser.createTerm()->symbol());*/
+  ASSERT_EQ("[]", parser.createTerm()->symbol());
 }
 
 
@@ -146,9 +146,9 @@ TEST_F(ParserTest, parseStructOfStructAllTheWay) {
 // Then it should return a List.
 // And #symbol() of List should return "[[1], []]".
 TEST_F(ParserTest, parseListOfLists) {            //will have space error
- /* Scanner scanner ("   [  [1], [] ]");
+  Scanner scanner ("   [  [1], [] ]");
   Parser parser(scanner);
-  EXPECT_EQ("[[1], []]",parser.createTerm()->symbol());*/
+  EXPECT_EQ("[[1], []]",parser.createTerm()->symbol());
 }
 
 
@@ -157,9 +157,9 @@ TEST_F(ParserTest, parseListOfLists) {            //will have space error
 // Then it should return a List.
 // And #symbol() of List should return "[[1], [], s(s(1))]".
 TEST_F(ParserTest, parseListOfListsAndStruct) {   //will have space error
-  /*Scanner scanner("   [  [1], [], s(s(1)) ]   ");
+  Scanner scanner("   [  [1], [], s(s(1)) ]   ");
   Parser parser(scanner);
-  ASSERT_EQ("[[1], [], s(s(1))]",parser.createTerm()->symbol());*/
+  ASSERT_EQ("[[1], [], s(s(1))]",parser.createTerm()->symbol());
 }
 
 // Given there is string: "   [1, 2]" in scanner.
@@ -167,9 +167,9 @@ TEST_F(ParserTest, parseListOfListsAndStruct) {   //will have space error
 // Then it should return a List.
 // And #symbol() of List should return "[1, 2]".
 TEST_F(ParserTest, parseList) { //will have space error
- /* Scanner scanner("   [1, 2]");
+  Scanner scanner("   [1, 2]");
   Parser parser(scanner);
-  ASSERT_EQ("[1, 2]",parser.createTerm()->symbol());*/
+  ASSERT_EQ("[1, 2]",parser.createTerm()->symbol());
 }
 
 // Given there is string: "[1,2)" in scanner.
@@ -191,14 +191,14 @@ TEST_F(ParserTest, illegal1) {
 // And #arity() of the Struct should be 2.
 // And #symbol() of Struct should return ".(1, [])".
 // And the first term should be number: "1", the second term should be another List: "[]".
-TEST_F(ParserTest, ListAsStruct) {/*         //space error
+TEST_F(ParserTest, ListAsStruct) {         //space error
   Scanner scanner ( ".(1,[])" );
 	Parser parser ( scanner );
 	Struct * s = dynamic_cast < Struct * > (parser.createTerm());
 	ASSERT_EQ ( 2 , s -> arity() );
 	ASSERT_EQ ( ".(1, [])" , s -> symbol() );
   ASSERT_EQ ( "1" , s -> args(0) -> symbol() );
-  ASSERT_EQ ( "[]" , s -> args(1) -> symbol() );*/
+  ASSERT_EQ ( "[]" , s -> args(1) -> symbol() );
 }
 
 
@@ -209,13 +209,13 @@ TEST_F(ParserTest, ListAsStruct) {/*         //space error
 // And #symbol() of Struct should return ".(2, .(1, []))"
 // And the first term should be number: "2", the second term should be another Strcut: ".(1, [])".
 TEST_F(ParserTest, ListAsStruct2) {
-  /*Scanner scanner(".(2, .(1, []))");
+  Scanner scanner(".(2, .(1, []))");
   Parser parser(scanner);
   Struct *ps = dynamic_cast<Struct *>(parser.createTerm());
   ASSERT_EQ(2, ps->arity());
   ASSERT_EQ(".(2, .(1, []))", ps->symbol());
   ASSERT_EQ("2", ps->args(0)->symbol());
-  ASSERT_EQ(".(1, [])", ps->args(1)->symbol());*/
+  ASSERT_EQ(".(1, [])", ps->args(1)->symbol());
 }
 
 
@@ -238,7 +238,7 @@ TEST_F(ParserTest, parseStructOfStructAllTheWay2) {
 // Then it should return a Struct.
 // And #symbol() of Strcut should return "point()".
 TEST_F(ParserTest, parseStructNoArg) {             //space error 
-  /*Scanner scanner("point()");
+ /* Scanner scanner("point()");
   Parser parser(scanner);
   ASSERT_EQ("point()", parser.createTerm()->symbol());*/
 }
@@ -273,9 +273,9 @@ TEST_F(ParserTest, parseStructTwoArgs) {
 // Then it should return a Struct.
 // And #symbol() of Strcut should return "...(11, 12)".
 TEST_F(ParserTest, parseStructDOTSTwoArgs) {    //error
-  /*Scanner scanner ( "...(11,12)" );
+  Scanner scanner ( "...(11,12)" );
   Parser parser ( scanner );
-  ASSERT_EQ ( "...(11, 12)" , parser.createTerm() -> symbol() );*/
+  ASSERT_EQ ( "...(11, 12)" , parser.createTerm() -> symbol() );
 }
 
 

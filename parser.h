@@ -9,7 +9,7 @@ using std::string;
 #include "scanner.h"
 #include "struct.h"
 #include "number.h"
-
+#include "list.h"
 class Parser{
 public:
   Parser(Scanner scanner) : _scanner(scanner){}
@@ -29,7 +29,12 @@ public:
         if(_scanner.currentChar() == '(' ) 
         {
           _scanner.nextToken() ;
-          vector<Term*> terms = getArgs();
+          vector<Term*> terms = {};
+		   if(_scanner.currentChar() == ')'){
+            _scanner.nextToken();
+            return new Struct(*atom, terms);
+          }	
+		  terms = getArgs();
           if(_currentToken == ')')
             return new Struct(*atom, terms);
         }
@@ -37,20 +42,37 @@ public:
           return atom;
     }
     ///
-    /*else if(token == ATOMSC)
+    else if(token == ATOMSC)//ATOMSC
     {
         Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
-        if(_scanner.currentChar() == '(' ) 
-        {
+        if(_scanner.currentChar() != '(' )return atom; 
+        else
+          {
           _scanner.nextToken() ;
-          vector<Term*> terms = getArgs();
+          vector<Term*> terms ={};
+		   if(_scanner.currentChar() == ')'){
+            _scanner.nextToken();
+            return new Struct(*atom, terms);
+          }	
+		  terms = getArgs();
           if(_currentToken == ')')
             return new Struct(*atom, terms);
         }
-        else
-          return atom;
-    }*/
+    }
     ////add like ATOM
+	else if ( token == '[' ){
+		if ( _scanner.currentChar() != ']');
+		else{
+			_scanner.nextToken();
+			return new List ();
+		}	
+		vector < Term * > terms = getArgs();
+		if ( _currentToken != ')' )
+			return new List ( terms );
+		else 
+			throw string ( "unexpected token" );
+	}
+	/////////////
     return nullptr;
   }
 
