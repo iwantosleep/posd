@@ -37,7 +37,7 @@ public:
 		  terms = getArgs();
           if(_currentToken == ')')
             return new Struct(*atom, terms);
-        }
+        }//
         else
           return atom;
     }
