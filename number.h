@@ -1,22 +1,28 @@
 #ifndef NUMBER_H
 #define NUMBER_H
 
-#include "term.h"
-
-class Number : public Term {
-	public :
-		Number ( double s ); 
-/*		string _symbol;
-		string  symbol() const;
-
-		string value() const ;
-
-private:
-
-	string _value;
-	bool _assignable = true;
-*/
-	//bool _matchValue = true;
-
+#include "variable.h"
+#include <string>
+#include <sstream>
+using std::string;
+class Number : public Term
+{
+public:
+  Number(double db) : Term(db) {
+    isNumber = true;
+  }
+ 
+  
+  bool match(Term &a)
+  {
+    if (!a.isList)
+    {
+    return _symbol == a.symbol();
+    }else{
+    return false;      
+    }
+  }
+  
 };
+
 #endif

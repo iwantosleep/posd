@@ -1,7 +1,11 @@
 #include "term.h"
+#include "atom.h"
+#include "variable.h"
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <typeinfo>
+bool Term::match(Term &a){
+    return _symbol == a.symbol();
+  }
 
-Term :: Term () : _symbol() {}
-Term :: Term (string s) : _symbol (s) {}
-string Term :: symbol () const { return _symbol; }
-string Term :: value () const { return symbol(); }
-bool Term :: match ( Term & term ) { return _symbol == term.symbol(); }
