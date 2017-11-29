@@ -99,7 +99,7 @@ public:
           _theTree = root;
           
         }
-        else if(_currentToken == ';'){//;'s tree
+        else if(isCOMMA ==0){//not ","  it's ";'s tree"
           isCOMMA = 0;
           Node * Sleft = _theTree;
           matchings();
@@ -163,5 +163,6 @@ private:
   int _currentToken;
   Node * _theTree;
   int isCOMMA = 0;
+  int testflag = 0;
 };
 #endif
