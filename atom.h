@@ -3,23 +3,13 @@
 
 #include <string>
 #include <sstream>
-#include "term.h"
 using std::string;
+#include "term.h"
 
-class Atom : public Term
-{
+
+class Atom : public Term{
 public:
-  Atom(string s) : Term(s) {}
-  bool isAtom = true;
-  bool match(Term &a)
-  {
-    if (a.isList)
-    {
-      return false;
-    }else{
-      return _symbol == a.symbol();
-    }
-  }
+  Atom(string s):Term(s) {}
 };
 
 #endif

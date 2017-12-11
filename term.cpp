@@ -1,11 +1,15 @@
 #include "term.h"
-#include "atom.h"
-#include "variable.h"
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <typeinfo>
-bool Term::match(Term &a){
-    return _symbol == a.symbol();
-  }
+#include "iterator.h"
 
+
+Term::Term ():_symbol(""){}
+Term::Term (string s):_symbol(s) {}
+Term::Term(double db){
+    std::ostringstream strs;
+    strs << db;
+    _symbol = strs.str();
+  }
+Iterator<Term*> * Term::createIterator()
+{
+  return new NullIterator<Term*>(this);
+}
