@@ -147,4 +147,76 @@ TEST(iterator, DFSTreeListFirst) {
   EXPECT_EQ("2", it->currentItem()->symbol());
   EXPECT_TRUE(it->isDone());
 }
+
+
+//5
+TEST(iterator, BFSTreeListEmpty){
+	vector<Term*> v = {};
+	List t(v);
+	Iterator<Term*> *it = t.createBFSIterator();
+	it->first();
+	ASSERT_TRUE(it->isDone());
+}
+//6
+TEST(iterator, BFSTreeStructEmpty){
+	vector<Term*> v = {};
+	Struct t(Atom("t"), v);
+	Iterator<Term*> *it = t.createBFSIterator();
+	it->first();
+	ASSERT_TRUE(it->isDone());
+}
+
+//7
+TEST(iterator, BFSTreeStructFirst) {// s(t(X, 1), 1, Y)
+  Variable X("X");
+  Number num1(1);
+  Number num2(1);
+  Variable Y("Y");
+  Struct t(Atom("t"), { &X, &num2 });
+  Struct s(Atom("s"), { &t, &num1, &Y });
+  Iterator<Term*> *it = s.createBFSIterator();
+  it->first();
+  EXPECT_EQ("t(X, 1)", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("1", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("Y", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("X", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("1", it->currentItem()->symbol());
+  EXPECT_TRUE(it->isDone());
+}
+
+//8
+TEST(iterator, BFSTreeListFirst) {
+
+//[X, [[1, X, 3], Y], 2]  ==X ->[[1,X,3],Y] -> 2 -> Y -> X -> 3
+  Number num1(1);
+  Number num2(2);
+  Number num3(3);
+  Variable X("X");
+  Variable Y("Y");
+  List l1({&num1,&X,&num3});
+  List l2({&l1,&Y});
+  List l3({&X,&l2,&num2});
+  Iterator<Term*> *it = l3.createBFSIterator();
+  it->first();
+  EXPECT_EQ("X", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("[[1, X, 3], Y]", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("2", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("[1, X, 3]", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("Y", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("1", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("X", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("3", it->currentItem()->symbol());
+  EXPECT_TRUE(it->isDone());
+}
 #endif
