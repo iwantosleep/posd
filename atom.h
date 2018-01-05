@@ -2,14 +2,14 @@
 #define ATOM_H
 
 #include <string>
-#include <sstream>
-using std::string;
 #include "term.h"
+#include "variable.h"
+using std::string;
 
-
-class Atom : public Term{
+class Atom : public Term
+{
 public:
-  Atom(string s):Term(s) {}
+  Atom(string s) : Term(s) {}
 };
 
 #endif

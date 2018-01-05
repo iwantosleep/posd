@@ -1,168 +1,181 @@
 #ifndef PARSER_H
 #define PARSER_H
-#include <string>
-using std::string;
 
+#include <gtest/gtest.h>
+#include <string>
+#include <vector>
+#include <stack>
 #include "atom.h"
-#include "variable.h"
-#include "global.h"
+#include "list.h"
+#include "number.h"
 #include "scanner.h"
 #include "struct.h"
-#include "list.h"
-#include "utParser.h"
-#include "node.h"
+#include "term.h"
+#include "variable.h"
+#include "exp.h"
 
-class Parser{
+using std::stack;
+using std::string;
+using std::vector;
+
+
+class Parser
+{
 public:
-  Parser(Scanner scanner) : _scanner(scanner), _terms(){}
+  Parser(Scanner scanner) : _scanner(scanner), _scopeStartIndex(0) {}
 
-  Term* createTerm(){
+  Term *createTerm()
+  {
     int token = _scanner.nextToken();
     _currentToken = token;
-    if(token == VAR){
-      return new Variable(symtable[_scanner.tokenValue()].first);
-    }else if(token == NUMBER){
+    if (token == VAR)
+    {
+      for (int i = _scopeStartIndex; i < _varTable.size(); i++)
+        if (symtable[_scanner.tokenValue()].first == _varTable[i]->symbol())
+          return _varTable[i];
+      Variable *variable = new Variable(symtable[_scanner.tokenValue()].first);
+      _varTable.push_back(variable);
+      return variable;
+    }
+    else if (token == NUMBER)
       return new Number(_scanner.tokenValue());
-    }else if(token == ATOM || token == ATOMSC){
-      Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
-      if(_scanner.currentChar() == '(' ) {
+    else if (token == ATOM || token == ATOMSC)
+    {
+      Atom *atom = new Atom(symtable[_scanner.tokenValue()].first);
+      if (_scanner.currentChar() == '(')
         return structure();
-      }
       else
         return atom;
     }
-    else if(token == '['){
+    else if (token == '[')
       return list();
-    }
-
-    return nullptr;
+    else
+      return nullptr;
   }
 
+  vector<Term *> &getTerms() { return _terms; }
 
+  Exp *buildExpression()
+  {
+    if (_scanner.getContext().find(";.") != string::npos)
+      throw string("Unexpected ';' before '.'");
+    if (_scanner.getContext().find(",.") != string::npos)
+      throw string("Unexpected ',' before '.'");
+    disjunctionMatch();
+    restDisjunctionMatch();
+    if (createTerm() != nullptr || _currentToken != '.')
+      throw string("Missing token '.'");
+    return _expStack.top();
+  }
 
-  Term * structure() {
+  Exp *getExpressionTree() { return _expStack.top(); }
+
+private:
+  void createTerms()
+  {
+    Term *term = createTerm();
+    if (term != nullptr)
+    {
+      _terms.push_back(term);
+      while ((_currentToken = _scanner.nextToken()) == ',')
+        _terms.push_back(createTerm());
+    }
+  }
+
+  Term *structure()
+  {
     Atom structName = Atom(symtable[_scanner.tokenValue()].first);
     int startIndexOfStructArgs = _terms.size();
     _scanner.nextToken();
     createTerms();
-    if(_currentToken == ')')
+    if (_currentToken == ')')
     {
-      vector<Term *> args(_terms.begin() + startIndexOfStructArgs, _terms.end());
+      vector<Term *> args(_terms.begin() + startIndexOfStructArgs,
+                          _terms.end());
       _terms.erase(_terms.begin() + startIndexOfStructArgs, _terms.end());
       return new Struct(structName, args);
-    } else {
-      throw string("unexpected token");
     }
+    else if (_currentToken == ';')
+      throw string("Unbalanced operator");
+    else
+      throw string("unexpected token");
   }
 
-  Term * list() {
+  Term *list()
+  {
     int startIndexOfListArgs = _terms.size();
     createTerms();
-    if(_currentToken == ']')
+    if (_currentToken == ']')
     {
       vector<Term *> args(_terms.begin() + startIndexOfListArgs, _terms.end());
       _terms.erase(_terms.begin() + startIndexOfListArgs, _terms.end());
       return new List(args);
-    } else {
+    }
+    else if (_currentToken == ';')
+      throw string("Unbalanced operator");
+    else
       throw string("unexpected token");
-    }
   }
 
-  vector<Term *> & getTerms() {
-    return _terms;
-  }
-  //find the node
-  void matchings()
-{
-    Term* term = createTerm();
-    if(term==nullptr);
-    else//none null
-    { 
-      if(isCOMMA!=0){
-        Term * getTerm  = find(term);
-        if(getTerm  != nullptr){term->match(*getTerm);}
-      }_terms.push_back(term);
-      while((_currentToken = _scanner.nextToken()) == ',' ||  _currentToken=='='|| _currentToken == ';') {
-        if (_currentToken == '=') {isCOMMA = 0;
-          //NOT COMMA
-          Node * left = new Node(TERM, _terms.back(), nullptr, nullptr);
-          _terms.push_back(createTerm());          
-          Node * right = new Node(TERM, _terms.back(), nullptr, nullptr);
-          Node * root = new Node(EQUALITY, nullptr, left, right);
-          _theTree = root;
-        }
-        else if(_currentToken == ','){
-          isCOMMA = 1;
-          Node * left = _theTree;
-          matchings();
-          Node * root = new Node(COMMA, nullptr, left, expressionTree());
-          _theTree = root;
-          
-        }
-        else if(isCOMMA ==0){//not ","  it's ";'s tree"
-          isCOMMA = 0;
-          Node * Sleft = _theTree;
-          matchings();
-          Node * Sroot = new Node(SEMICOLON, nullptr, Sleft, expressionTree());
-          _theTree = Sroot;
-        }
-      }
-    }
-}
-
-  Term * find(Term * term){
-    for(int index = 0; index < _terms.size() ; index++){
-      while(_terms[index]->symbol() == term->symbol()) 
-      {
-        return _terms[index];
-      }
-      Struct * s = dynamic_cast<Struct*>(_terms[index]);
-      while(s) 
-      {
-        return Findstruct(s,term);
-      }
-    }
-    return nullptr;
-  }
-
-  Term * Findstruct(Struct * s, Term * term){
-    for(int i = 0; i < s->arity() ; i++){
-      while(s->args(i)->symbol() == term->symbol()) return s->args(i);
-      Struct * ss = dynamic_cast<Struct*>(s->args(i));
-      while(ss) {
-        return Findstruct(ss,term);
-      }
-    }
-    return nullptr;
-  }
-
-
-  Node * expressionTree(){
-    return _theTree;
-  }
-
-private:
-  FRIEND_TEST(ParserTest, createArgs);
-  FRIEND_TEST(ParserTest,ListOfTermsEmpty);
-  FRIEND_TEST(ParserTest,listofTermsTwoNumber);
-  FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
-
-  void createTerms() {
-    Term* term = createTerm();
-    if(term!=nullptr)
+  void restDisjunctionMatch()
+  {
+    if (_scanner.currentChar() == ';')
     {
-      _terms.push_back(term);
-      while((_currentToken = _scanner.nextToken()) == ',') {
-        _terms.push_back(createTerm());
-      }
+      _scopeStartIndex = _varTable.size();
+      createTerm();
+      disjunctionMatch();
+      Exp *right = _expStack.top();
+      _expStack.pop();
+      Exp *left = _expStack.top();
+      _expStack.pop();
+      _expStack.push(new DisjExp(left, right));
+      restDisjunctionMatch();
     }
   }
 
-  vector<Term *> _terms;
+  void disjunctionMatch()
+  {
+    conjunctionMatch();
+    restConjunctionMatch();
+  }
+
+  void restConjunctionMatch()
+  {
+    if (_scanner.currentChar() == ',')
+    {
+      createTerm();
+      conjunctionMatch();
+      Exp *right = _expStack.top();
+      _expStack.pop();
+      Exp *left = _expStack.top();
+      _expStack.pop();
+      _expStack.push(new ConjExp(left, right));
+      restConjunctionMatch();
+    }
+  }
+
+  void conjunctionMatch()
+  {
+    Term *left = createTerm();
+    if (createTerm() == nullptr && _currentToken == '=')
+    {
+      Term *right = createTerm();
+      _expStack.push(new MatchExp(left, right));
+    }
+    else
+      throw string(left->symbol() + " does never get assignment");
+  }
+
   Scanner _scanner;
   int _currentToken;
-  Node * _theTree;
-  int isCOMMA = 0;
-  int testflag = 0;
+  vector<Term *> _terms;
+  vector<Variable *> _varTable;
+  int _scopeStartIndex;
+  stack<Exp *> _expStack;
+
+  FRIEND_TEST(ParserTest, createArgs);
+  FRIEND_TEST(ParserTest, ListOfTermsEmpty);
+  FRIEND_TEST(ParserTest, listofTermsTwoNumber);
+  FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
 };
 #endif

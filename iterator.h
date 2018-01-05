@@ -1,193 +1,182 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-#include "struct.h"
-#include "list.h"
 #include <queue>
+#include <stack>
+#include "list.h"
+#include "struct.h"
+#include "term.h"
+using std::queue;
+using std::stack;
 
 template <class T>
-class Iterator {
+class Iterator
+{
 public:
   virtual void first() = 0;
   virtual void next() = 0;
-  virtual T currentItem() const = 0;
+  virtual Term *currentItem() const = 0;
   virtual bool isDone() const = 0;
+  virtual Term *currentTerm() const = 0;
 };
 
 template <class T>
-class NullIterator :public Iterator<T>{
+class NullIterator : public Iterator<T>
+{
 public:
-  NullIterator(T n){}
-  void first(){}
-  void next(){}
-  T currentItem() const{
-      return nullptr;
-  }
-  bool isDone() const{
-    return true;
-  }
+  friend class Term;
+
+  void first(){};
+  void next(){};
+  Term *currentItem() const { return nullptr; };
+  bool isDone() const { return true; };
+  Term *currentTerm() const { return _t; };
+
+private:
+  NullIterator(T t) : _t(t) {}
+  T _t;
 };
 
 template <class T>
-class StructIterator :public Iterator<T> {
+class StructIterator : public Iterator<T>
+{
 public:
   friend class Struct;
-  void first() {
-    _index = 0;
-  }
-  Term* currentItem() const {
-    return _s->args(_index);
-  }
-  bool isDone() const {
-    return _index >= _s->arity();
-  }
-  void next() {
-    _index++;
-  }
-   StructIterator(Struct *s): _index(0), _s(s) {}
+
+  void first() { _index = 0; }
+  void next() { _index++; }
+  Term *currentItem() const { return _s->args(_index); }
+  bool isDone() const { return _index >= _s->arity(); }
+  Term *currentTerm() const { return _s; };
+
 private:
+  StructIterator(Struct *s) : _index(0), _s(s) {}
   int _index;
-  Struct* _s;
+  Struct *_s;
 };
 
 template <class T>
-class ListIterator :public Iterator<T> {
+class ListIterator : public Iterator<T>
+{
 public:
-  ListIterator(List *list): _index(0), _list(list) {}
-  void first() {
-    _index = 0;
-  }
-  Term* currentItem() const {
-    return _list->args(_index);
-  }
-  bool isDone() const {
-    return _index >= _list->arity();
-  }
-  void next() {
-    _index++;
-  }
-private:
-  int _index;
-  List* _list;
-};
+  friend class List;
 
-
-//BFSiterator
-template <class T>
-class BFSearchIterator :public Iterator<T> {
-public:
-  BFSearchIterator(Term* term): _term(term){}
-  void first() {
-    _index = 1;
-    _element.clear();//container clear
-    STranversal(_term);
-  }
-  Term * currentItem() const {
-    return _element[_index];
-  }
-  void STranversal(Term* term) 
+  void first() { _tailList = *_l; }
+  void next()
   {
-    Term * pmt; 
-    queue<Term*> que;
-    que.push(_term);
-    while(!que.empty()) 
+    try
     {
-      pmt = que.front();
-      que.pop();
-      _element.push_back(pmt);
-      Struct *dst = dynamic_cast<Struct *>(pmt);
-      List *dlst = dynamic_cast<List *>(pmt);
-      if (dst)
-      {
-      int count=dst->arity(),j=0;
-        while(count)
-        {
-          que.push(dst->args(j));
-          count--;
-            j++;
-        }
-      }        
-      if (dlst) 
-      {
-      int count=dlst->arity(),j=0;
-        while(count)
-        {
-          que.push(dlst->args(j));
-          count--;
-            j++;
-        }
-      } 
+      _tailList = *(_tailList.tail());
     }
-  } 
-  void next() {
-    _index++;
+    catch (string e)
+    {
+    }
   }
-  bool isDone() const {
-    return _index >= _element.size() - 1;
-  }  
+  Term *currentItem() const { return _tailList.head(); }
+  bool isDone() const
+  {
+    try
+    {
+      _tailList.head();
+    }
+    catch (string e)
+    {
+      return true;
+    }
+    return false;
+  }
+  Term *currentTerm() const { return _l; };
+
 private:
-  int _index;
-  Term* _term;
-  vector<T> _element;
+  ListIterator(List *l) : _l(l), _tailList(*l) {}
+  List *_l, _tailList;
 };
 
-
-//DFSiterator
 template <class T>
-class DFSearchIterator :public Iterator<T> {
+class DFSIterator : public Iterator<T>
+{
 public:
-  DFSearchIterator(Term* term): _term(term) { }
-    
-  void first() {
-    _index = 1;
-    DTranversal(_term);
-  }
-  Term* currentItem() const {
-    return _elements[_index];
-  }
-  void DTranversal(Term* term) 
+  friend class Struct;
+  friend class List;
+
+  void first()
   {
-    _elements.push_back(term);
-    Struct *dst = dynamic_cast<Struct*>(term);
-    List *dlst = dynamic_cast<List*>(term);
-    if(!dlst)
-    {;;}
-    else
+    while (!_iteratorStack.empty())
+      _iteratorStack.pop();
+    _iteratorStack.push(_t->createIterator());
+  }
+  void next()
+  {
+    if (!isDone())
     {
-      int count=dlst->arity(),j=0;
-      while(count)
+      if (isLeaf())
       {
-	      DTranversal(dlst->args(j)); 
-	      count--;
-        j++;
+        _iteratorStack.top()->next();
+        while (!isDone() && _iteratorStack.top()->isDone())
+        {
+          _iteratorStack.pop();
+          if (!isDone())
+            _iteratorStack.top()->next();
+        }
+      }
+      else
+        _iteratorStack.push(currentItem()->createIterator());
+    }
+  }
+  Term *currentItem() const { return _iteratorStack.top()->currentItem(); }
+  bool isDone() const { return _iteratorStack.empty(); };
+  Term *currentTerm() const { return _t; };
+
+private:
+  DFSIterator(T t) : _t(t) { _iteratorStack.push(_t->createIterator()); }
+  bool isLeaf() const { return currentItem()->createIterator()->isDone(); }
+
+  stack<Iterator<Term *> *> _iteratorStack;
+  T _t;
+};
+
+template <class T>
+class BFSIterator : public Iterator<T>
+{
+public:
+  friend class Struct;
+  friend class List;
+
+  void first()
+  {
+    while (!_iteratorQueue.empty())
+      _iteratorQueue.pop();
+    _iteratorQueue.push(_t->createIterator());
+  }
+  void next()
+  {
+    if (!isDone())
+    {
+      if (isLeaf())
+      {
+        _iteratorQueue.front()->next();
+        if (_iteratorQueue.front()->isDone())
+          _iteratorQueue.pop();
+      }
+      else
+      {
+        _iteratorQueue.push(currentItem()->createIterator());
+        _iteratorQueue.front()->next();
+        if (_iteratorQueue.front()->isDone())
+          _iteratorQueue.pop();
       }
     }
-    if (!dst)
-    {;;}
-    else
-    {
-      int count=dst->arity(),j=0;
-      while(count)
-      {
-	      DTranversal(dst->args(j));
-	      count--;
-        j++;
-      }
-    }  
   }
-  bool isDone() const {
-    return _index >= _elements.size()-1;
-  }
-  void next() {
-    _index++;
-  }
+  Term *currentItem() const { return _iteratorQueue.front()->currentItem(); }
+  bool isDone() const { return _iteratorQueue.empty(); };
+  Term *currentTerm() const { return _t; };
+
 private:
-  int _index=0;
-  int flag;
-  Term* _term;
-  vector<T> _elements;
+  BFSIterator(T t) : _t(t) { _iteratorQueue.push(_t->createIterator()); }
+  bool isLeaf() const { return currentItem()->createIterator()->isDone(); }
+
+  queue<Iterator<Term *> *> _iteratorQueue;
+  T _t;
 };
-
-
 
 #endif
