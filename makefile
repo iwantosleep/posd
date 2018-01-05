@@ -5,8 +5,7 @@ ifeq (${OS}, Windows_NT)
 else
 	make utShell.o
 	g++ -o hw8 utShell.o term.o struct.o list.o -lgtest -lpthread
-	./hw8
-	make clean
+
 endif
 
 shell: term.o struct.o list.o shell.cpp parser.h scanner.h exp.h atom.h number.h variable.h
