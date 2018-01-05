@@ -44,7 +44,7 @@ public:
   { 
     if (_right->getResult() == _true||_right->getResult()==_false)return _left->getResult();
     else if (_left->getResult() == _true||_left->getResult()==_false)return _right->getResult();
-    else return _left->getResult() + "; " + _right->getResult(); 
+    else return _left->getResult() + ", " + _right->getResult(); 
   }
 
 private:
