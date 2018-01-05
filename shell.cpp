@@ -21,7 +21,8 @@ int main(int argc, char **argv)
     }while(input == "" || context.back() != '.');
     if(context == "halt.") break;
     p = new Parser(Scanner(context));
-    cout << p->buildExpression()->evaluate() << endl;
+    //cout << p->buildExpression()->evaluate() << endl;
+    cout << p->buildExpression()->getResult() << endl;
     //cout << p->buildExpression()->getResult() << endl;
     context = "";
   };
