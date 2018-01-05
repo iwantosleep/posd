@@ -42,8 +42,16 @@ public:
   bool evaluate() { return (_left->evaluate() && _right->evaluate()); }
   string getResult()  
   { 
-    if (_right->getResult() == _true||_right->getResult()==_false)return _left->getResult();
-    else if (_left->getResult() == _true||_left->getResult()==_false)return _right->getResult();
+    if (_left->getResult() == _false || _right->getResult() == _false)
+      return _false;
+    else if (_left->getResult() == _true && _right->getResult() == _true)
+      return _true;
+    else if (_left->getResult() == _true)
+      return _right->getResult();
+    else if (_right->getResult() == _true)
+      return _left->getResult();
+    else if (_left->getResult().find(_right->getResult()) != string::npos)
+      return _left->getResult();
     else return _left->getResult() + ", " + _right->getResult(); 
   }
 
